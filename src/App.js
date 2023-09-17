@@ -1,23 +1,55 @@
 import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import Card from './conponents/Card.js';
+import {data} from './conponents/data.js';
+
+
 
 function App() {
+  const [value,setValue] = useState(data);
+
+  function removeCard(id){
+    let newValue = value.filter((newItem)=>newItem.id !== id);
+    setValue(newValue);
+  }
+  let ref = '';
+    
+if (value.length==0)
+{
+  ref =   <div className='empty'>
+  <div className='refresh'>No Tours Left</div>
+  <button className='refresh-button' onClick={reload}>Refresh</button>
+  </div>;
+}
+
+  function reload(){
+    setValue(data);
+  }
+  let item_data = value.map((items)=>{
+    return(
+      <Card
+            id = {items.id}
+           img = {items.img}
+           price = {items.price}
+           place = {items.place}
+           desc = {items.desc}
+
+           removeCard = {removeCard}
+      />
+    );
+  })
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+    <div className='hero'>
+
+      <h2 className='hero-heading'>Create-With-Love</h2>
+    </div>
+    <div className='content'>
+    {item_data}
+    </div>   
+    {ref}
     </div>
   );
 }
